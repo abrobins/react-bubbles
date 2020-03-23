@@ -11,6 +11,7 @@ const ColorList = ({ colors, updateColors }) => {
   console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const [addColor, setaddColor] = useState(initialColor);
 
   const editColor = color => {
     setEditing(true);
@@ -43,8 +44,36 @@ const ColorList = ({ colors, updateColors }) => {
       .catch(err => console.log(err));
   };
 
+  const newColor = e => {
+    e.preventDefault();
+    axiosWithAuth()
+      .post(`/api/colors`, addColor)
+      .then(res => {
+        console.log(res);
+        updateColors([...colors, addColor]);
+        // updateColors(res.data);
+
+        //window.location.href = "http://localhost:3000/protected";
+      });
+  };
+
   return (
     <div className="colors-wrap">
+      <label>
+        color:
+        <input
+          onChange={e => setaddColor({ ...addColor, color: e.target.value })}
+          value={addColor.color}
+        />
+      </label>
+      <label>
+        hex:
+        <input
+          onChange={e => setaddColor({ ...addColor, hex: e.target.value })}
+          value={addColor.color.hex}
+        />
+      </label>
+      <button onClick={newColor}>Add New Color</button>
       <p>colors</p>
       <ul>
         {colors.map(color => (
