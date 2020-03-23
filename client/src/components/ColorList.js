@@ -49,8 +49,9 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
       .post(`/api/colors`, addColor)
       .then(res => {
-        console.log(res);
+        console.log("new color res", res);
         updateColors([...colors, addColor]);
+        setEditing(false);
         // updateColors(res.data);
 
         //window.location.href = "http://localhost:3000/protected";
@@ -69,7 +70,9 @@ const ColorList = ({ colors, updateColors }) => {
       <label>
         hex:
         <input
-          onChange={e => setaddColor({ ...addColor, hex: e.target.value })}
+          onChange={e =>
+            setaddColor({ ...addColor, code: { hex: e.target.value } })
+          }
           value={addColor.color.hex}
         />
       </label>
